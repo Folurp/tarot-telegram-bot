@@ -1,2 +1,21 @@
-# tarot-telegram-bot
-Telegram Tarot Randomizer Bot
+# 🔮 Tarot Telegram Bot
+
+Telegram-бот для случайных раскладов Таро.
+
+## Возможности
+
+- Карта дня
+- Расклад на три карты
+- Расклад на любовь
+- Расклад на финансы
+- Случайный расклад
+
+## Установка
+
+Установить зависимости:
+
+pip install -r requirements.txt
+
+Запустить бота:
+
+python bot.py
