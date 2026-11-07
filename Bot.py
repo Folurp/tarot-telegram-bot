@@ -1,3 +1,4 @@
+
 import asyncio
 import random
 
@@ -9,19 +10,12 @@ from aiogram.types import (
     KeyboardButton
 )
 
-# =====================================
-# НАСТРОЙКИ БОТА
-# =====================================
-
 TOKEN = "9064136765:AAEn8crtydjucS4eEZxpvTacslHqH6mb40Y"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-
-# =====================================
-# КОЛОДА ТАРО
-# =====================================
+# сами карты
 
 cards = [
     {
@@ -122,11 +116,6 @@ cards = [
     }
 ]
 
-
-# =====================================
-# КЛАВИАТУРА
-# =====================================
-
 keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -144,11 +133,6 @@ keyboard = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
-
-# =====================================
-# ФУНКЦИИ
-# =====================================
-
 def get_card():
     return random.choice(cards)
 
@@ -158,11 +142,6 @@ def format_card(card):
         f"🃏 Карта: {card['name']}\n\n"
         f"✨ Значение:\n{card['meaning']}"
     )
-
-
-# =====================================
-# КОМАНДА START
-# =====================================
 
 @dp.message(CommandStart())
 async def start(message: Message):
@@ -174,11 +153,6 @@ async def start(message: Message):
         reply_markup=keyboard
     )
 
-
-# =====================================
-# КАРТА ДНЯ
-# =====================================
-
 @dp.message(F.text == "🔮 Карта дня")
 async def daily_card(message: Message):
     card = get_card()
@@ -188,11 +162,6 @@ async def daily_card(message: Message):
         + format_card(card)
         + "\n\n✨ Пусть день будет прекрасным!"
     )
-
-
-# =====================================
-# ТРИ КАРТЫ
-# =====================================
 
 @dp.message(F.text == "🌙 Три карты")
 async def three_cards(message: Message):
@@ -215,11 +184,6 @@ async def three_cards(message: Message):
 
     await message.answer(result)
 
-
-# =====================================
-# ЛЮБОВЬ
-# =====================================
-
 @dp.message(F.text == "❤️ Любовь")
 async def love(message: Message):
 
@@ -231,11 +195,6 @@ async def love(message: Message):
         + "\n\n💌 Подумай о своих чувствах "
           "и о том, чего ты действительно хочешь."
     )
-
-
-# =====================================
-# ФИНАНСЫ
-# =====================================
 
 @dp.message(F.text == "💰 Финансы")
 async def finance(message: Message):
@@ -249,11 +208,6 @@ async def finance(message: Message):
           "обдумать свои финансовые решения."
     )
 
-
-# =====================================
-# СЛУЧАЙНЫЙ РАСКЛАД
-# =====================================
-
 @dp.message(F.text == "🎲 Случайный расклад")
 async def random_reading(message: Message):
 
@@ -264,11 +218,6 @@ async def random_reading(message: Message):
         + format_card(card)
     )
 
-
-# =====================================
-# НЕИЗВЕСТНЫЕ СООБЩЕНИЯ
-# =====================================
-
 @dp.message()
 async def unknown_message(message: Message):
 
@@ -276,44 +225,3 @@ async def unknown_message(message: Message):
         "🔮 Я пока не знаю такой команды.\n\n"
         "Пожалуйста, воспользуйся кнопками меню."
     )
-
-
-# =====================================
-# ЗАПУСК БОТА
-# =====================================
-
-async def main():
-
-    print("================================")
-    print("Подключаемся к Telegram...")
-    print("================================")
-
-    try:
-        # Проверяем подключение и токен
-        bot_info = await bot.get_me()
-
-        print("✅ БОТ УСПЕШНО ПОДКЛЮЧЕН!")
-        print(f"🤖 Имя: {bot_info.first_name}")
-        print(f"🔗 Username: @{bot_info.username}")
-        print("================================")
-        print("🔮 БОТ ОЖИДАЕТ СООБЩЕНИЯ!")
-        print("================================")
-
-        # Запускаем получение сообщений
-        await dp.start_polling(bot)
-
-    except Exception as error:
-        print("❌ ПРОИЗОШЛА ОШИБКА!")
-        print(f"Причина: {error}")
-
-    finally:
-        await bot.session.close()
-        print("Соединение с Telegram закрыто.")
-
-
-if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-
-    except KeyboardInterrupt:
-        print("Бот остановлен пользователем.")
